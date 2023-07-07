@@ -2,6 +2,7 @@ import express, {Response, Request} from "express"
 import {runDb} from "./db";
 import bodyParser from "body-parser";
 import {blogRouter} from "./routing/blog-routing";
+import {postRouter} from "./routing/post-routing";
 
 
 
@@ -17,6 +18,7 @@ app.use(bodyParserWare)
 
 
 app.use("/blogs", blogRouter)
+app.use('/posts', postRouter)
 
 
 app.get('/', (req: Request, res: Response) => {
