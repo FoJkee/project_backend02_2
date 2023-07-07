@@ -9,7 +9,7 @@ export type BlogType_Id = {
     isMembership: boolean
 }
 
-export type BlogTypeId = {id : string} & Omit<BlogType_Id, "_id">
+export type BlogTypeId = { id: string } & Omit<BlogType_Id, "_id">
 
 export type Paginated<T> = {
     pagesCount: number,
@@ -27,5 +27,9 @@ export type QueryParamsBlog = {
     searchNameTerm: string
 
 }
+
+
+
+
 
 
