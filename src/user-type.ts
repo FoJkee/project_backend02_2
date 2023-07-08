@@ -1,4 +1,4 @@
-import {ObjectId} from "mongodb";
+import {ObjectId, Sort, SortDirection} from "mongodb";
 
 export type UserType_Id = {
     _id: ObjectId,
@@ -10,3 +10,13 @@ export type UserType_Id = {
 }
 
 export type UserTypeId= {id: string} & Omit<UserType_Id, "_id" | 'passwordHash' | 'passwordSalt'>
+
+
+export type QueryParamsUser = {
+    pageNumber: number,
+    pageSize: number,
+    sortBy: Sort,
+    sortDirection: SortDirection,
+    searchLoginTerm: string,
+    searchEmailTerm: string
+}

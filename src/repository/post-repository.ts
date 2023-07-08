@@ -1,9 +1,44 @@
 import {Filter, ObjectId, Sort, SortDirection} from "mongodb";
 import {PostType_Id, PostTypeId} from "../post-type";
-import {postCollection} from "../db";
+import {commentCollection, postCollection, userCollection} from "../db";
 import {Paginated} from "../blog-type";
+import {CommentType_Id, CommentTypeId} from "../comment-type";
 
 export const postRepository = {
+
+    async getPostForComments(postId: string){
+
+
+
+
+    },
+
+
+
+    async createPostForComments(content: string, postId: string): Promise<CommentTypeId | null> {
+        const createComForPost = await userCollection.findOne({_id: new ObjectId(postId)})
+        if (!createComForPost) return null
+
+        const createComInPost: CommentType_Id = {
+            _id: new ObjectId(),
+            content,
+            commentatorInfo: {
+                userId: createComForPost._id.toString(),
+                userLogin: createComForPost.login,
+            },
+            createdAt: new Date().toISOString()
+        }
+
+        const resultCreateComInPost = await commentCollection.insertOne(createComInPost)
+
+        return {
+            id: resultCreateComInPost.insertedId.toString(),
+            content: createComInPost.content,
+            commentatorInfo: createComInPost.commentatorInfo,
+            createdAt: createComInPost.createdAt
+        }
+    },
+
 
     async getPost(pageNumber: number, pageSize: number, sortBy: Sort, sortDirection: SortDirection): Promise<Paginated<PostTypeId>> {
 
@@ -106,8 +141,8 @@ export const postRepository = {
 
     },
 
-    async deletePostAll(){
-        const deleteAll= await postCollection.deleteMany({})
+    async deletePostAll() {
+        const deleteAll = await postCollection.deleteMany({})
         return deleteAll.deletedCount === 1
 
     }
