@@ -1,10 +1,7 @@
 import {Filter, ObjectId, Sort, SortDirection} from "mongodb";
 import {PostType_Id, PostTypeId} from "../post-type";
 import {postCollection} from "../db";
-import e from "express";
-import {machine} from "os";
 import {Paginated} from "../blog-type";
-import * as net from "net";
 
 export const postRepository = {
 

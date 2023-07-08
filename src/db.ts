@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import {MongoClient} from "mongodb";
 import {BlogType_Id} from "./blog-type";
 import {PostType_Id} from "./post-type";
+import {UserType_Id} from "./user-type";
 
 dotenv.config()
 
@@ -20,6 +21,9 @@ const db = client.db('social_network')
 
 export const blogCollection = db.collection<BlogType_Id>('blogs')
 export const postCollection = db.collection<PostType_Id>('posts')
+export const userCollection = db.collection<UserType_Id>('users')
+
+export const commentCollection = db.collection('comments')
 
 
 
