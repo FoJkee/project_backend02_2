@@ -38,7 +38,6 @@ export const blogRepository = {
             pageSize: pageSize,
             totalCount: totalCount,
             items: itemBlog
-
         }
         return resultBlog
 

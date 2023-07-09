@@ -6,6 +6,7 @@ import {postRouter} from "./routing/post-routing";
 import {testingRouter} from "./routing/testing-routing";
 import {userRouter} from "./routing/user-routing";
 import {authRouter} from "./routing/auth-routing";
+import {commentRouter} from "./routing/comment-routing";
 
 
 const app = express()
@@ -23,6 +24,7 @@ app.use('/posts', postRouter)
 app.use('/testing', testingRouter)
 app.use('/users', userRouter)
 app.use('/auth', authRouter)
+app.use('/comments', commentRouter)
 
 
 app.get('/', (req: Request, res: Response) => {

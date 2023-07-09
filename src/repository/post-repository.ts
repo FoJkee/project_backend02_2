@@ -3,19 +3,43 @@ import {PostType_Id, PostTypeId} from "../post-type";
 import {commentCollection, postCollection, userCollection} from "../db";
 import {Paginated} from "../blog-type";
 import {CommentType_Id, CommentTypeId} from "../comment-type";
+import {UserTypeId} from "../user-type";
 
 export const postRepository = {
 
-    async getPostForComments(postId: string){
+    async getPostForComments(pageNumber: number, pageSize: number,
+                             sortBy: Sort, sortDirection: SortDirection, postId: string): Promise<Paginated<CommentTypeId>> {
 
+        const settingComForPost: CommentType_Id[] = await commentCollection
+            .find({postId})
+            .sort({sortBy: sortDirection})
+            .skip(pageSize * (pageNumber - 1))
+            .limit(pageSize)
+            .toArray()
 
+        const itemCom: CommentTypeId[] = settingComForPost.map(el => ({
+            id: el._id.toString(),
+            content: el.content,
+            commentatorInfo: el.commentatorInfo,
+            createdAt: el.createdAt
+        }))
 
+        const totalCount: number = await commentCollection.countDocuments({postId})
+        const pagesCount: number = Math.ceil(totalCount / pageSize)
+
+        const resultCom: Paginated<CommentTypeId> = {
+            pagesCount: pagesCount,
+            page: pageNumber,
+            pageSize: pageSize,
+            totalCount: totalCount,
+            items: itemCom
+        }
+        return resultCom
 
     },
 
-
-
     async createPostForComments(content: string, postId: string): Promise<CommentTypeId | null> {
+
         const createComForPost = await userCollection.findOne({_id: new ObjectId(postId)})
         if (!createComForPost) return null
 
@@ -38,7 +62,6 @@ export const postRepository = {
             createdAt: createComInPost.createdAt
         }
     },
-
 
     async getPost(pageNumber: number, pageSize: number, sortBy: Sort, sortDirection: SortDirection): Promise<Paginated<PostTypeId>> {
 

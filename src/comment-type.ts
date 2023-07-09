@@ -1,4 +1,4 @@
-import {ObjectId} from "mongodb";
+import {ObjectId, Sort, SortDirection} from "mongodb";
 
 export type CommentType_Id = {
     _id: ObjectId,
@@ -11,4 +11,12 @@ export type CommentType_Id = {
 }
 
 export type CommentTypeId = {id: string} & Omit<CommentType_Id, "_id">
+
+
+export type QueryParamsCom = {
+    pageNumber: number,
+    pageSize: number,
+    sortBy: Sort,
+    sortDirection: SortDirection,
+}
 

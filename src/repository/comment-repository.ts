@@ -1,20 +1,45 @@
 import {ObjectId} from "mongodb";
-import {CommentType} from "../comment-type";
+import {CommentType_Id, CommentTypeId} from "../comment-type";
+import {commentCollection} from "../db";
 
 
 export const commentRepository = {
-    async getUser(id: string, content: string, userId: string, userLogin: string) {
 
-        const findCom: CommentType = {
-            _id: new ObjectId(),
-            content,
-            commentatorInfo: {
-                userId,
-                userLogin
-            },
-            createdAt: new Date().toISOString()
+    async getComId(id: string): Promise<CommentTypeId | null> {
+        const findComId = await commentCollection.findOne({_id: new ObjectId(id)})
+        if (findComId) {
+            return {
+                id: findComId._id.toString(),
+                content: findComId.content,
+                commentatorInfo: {
+                    userId: findComId.commentatorInfo.userId,
+                    userLogin: findComId.commentatorInfo.userLogin
+                },
+                createdAt: findComId.createdAt
+            }
         }
+        else
+            {
+                return null
+            }
 
+    },
+
+    async deleteCom(commentId: string): Promise<boolean> {
+        const deleteComment = await commentCollection.deleteOne({_id: new ObjectId(commentId)})
+        return deleteComment.deletedCount === 1
+
+
+    },
+
+    async updateCom(commentId: string, content: string) {
+        const updateComment = await commentCollection.updateOne({_id: new ObjectId(commentId)},
+            {
+                $set: {
+                    content
+                }
+            })
+        return updateComment.matchedCount === 1
 
     }
 

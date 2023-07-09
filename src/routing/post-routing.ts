@@ -4,9 +4,49 @@ import {QueryParamsPost} from "../post-type";
 import {authMiddleware} from "../middleware /auth-middleware";
 import {postMiddleware} from "../middleware /post-middleware";
 import {errorsMiddleware} from "../middleware /errors-middleware";
+import {CommentTypeId, QueryParamsCom} from "../comment-type";
+import {commentMiddleware} from "../middleware /comment-middleware";
 
 
 export const postRouter = Router()
+
+postRouter.get('/:id/comments', async (req: Request<CommentTypeId, {}, {}, QueryParamsCom>, res: Response) => {
+    const findPostId = await postRepository.getPostForId(req.params.id)
+    if (!findPostId) {
+        res.sendStatus(404)
+        return
+    }
+
+    const postIdCom = await postRepository.getPostForComments(
+        Number(req.query.pageNumber) || 1,
+        Number(req.query.pageSize) || 10,
+        req.query.sortBy || 'createdAt',
+        req.query.sortDirection || 'desc',
+        req.params.id
+    )
+
+    return res.status(200).json(postIdCom)
+
+})
+postRouter.post('/:id/comments', authMiddleware,commentMiddleware, errorsMiddleware,
+    async (req: Request, res: Response) => {
+
+    const findPostId = await postRepository.getPostForId(req.params.id)
+    if (!findPostId) {
+        res.sendStatus(404)
+        return
+    }
+
+    const createPostForCom = await postRepository.createPostForComments(
+        req.body.content, req.params.id
+    )
+
+       return  res.status(201).json(createPostForCom)
+
+
+
+
+})
 
 
 postRouter.get('/', async (req: Request<{}, {}, {}, QueryParamsPost>, res: Response) => {

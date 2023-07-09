@@ -24,7 +24,8 @@ blogRouter.get('/', async (req: Request<{}, {}, {}, QueryParamsBlog>, res: Respo
 
 })
 
-blogRouter.post('/', authMiddleware, blogMiddleware, errorsMiddleware, async (req: Request, res: Response) => {
+blogRouter.post('/', authMiddleware, blogMiddleware, errorsMiddleware,
+    async (req: Request, res: Response) => {
 
     const blogCreate = await blogRepository.createBlog(
         req.body.name, req.body.description, req.body.websiteUrl)
@@ -62,7 +63,7 @@ blogRouter.post('/:id/posts', authMiddleware, blogPostMiddleware, errorsMiddlewa
             res.sendStatus(404)
             return
         }
-        const createBlogForPost = blogRepository.createBlogForPost(
+        const createBlogForPost = await blogRepository.createBlogForPost(
             req.body.title, req.body.shortDescription, req.body.content, req.params.id
         )
 
