@@ -25,7 +25,6 @@ export const blogRepository = {
             websiteUrl: el.websiteUrl,
             createdAt: el.createdAt,
             isMembership: el.isMembership
-
         }))
 
         const totalCount: number = await blogCollection.countDocuments(filter)
@@ -43,19 +42,9 @@ export const blogRepository = {
 
     },
 
-    async createBlog(name: string, description: string, websiteUrl: string): Promise<BlogTypeId> {
-
-        const newBlog: BlogType_Id = {
-            _id: new ObjectId(),
-            name,
-            description,
-            websiteUrl,
-            createdAt: new Date().toISOString(),
-            isMembership: false
-        }
+    async createBlog(newBlog: BlogType_Id): Promise<BlogTypeId> {
 
         const createBlogDb = await blogCollection.insertOne(newBlog)
-
         return {
             id: createBlogDb.insertedId.toString(),
             name: newBlog.name,
@@ -91,7 +80,7 @@ export const blogRepository = {
         const pagesCount: number = Math.ceil(totalCount / pageSize)
 
 
-       const resultPostForBlog: Paginated<PostTypeId> = {
+        const resultPostForBlog: Paginated<PostTypeId> = {
             pagesCount: pagesCount,
             page: pageNumber,
             pageSize: pageSize,
@@ -103,20 +92,9 @@ export const blogRepository = {
 
     },
 
-    async createBlogForPost(title: string, shortDescription: string, content: string, blogId: string): Promise<PostTypeId | null> {
+    async createBlogForPost(createPostInBlog: PostType_Id, blogId: string): Promise<PostTypeId> {
 
-        const createPostForBlog = await blogCollection.findOne({_id: new ObjectId(blogId)})
-        if (!createPostForBlog) return null
 
-        const createPostInBlog: PostType_Id = {
-            _id: new ObjectId(),
-            title,
-            shortDescription,
-            content,
-            blogId: createPostForBlog._id.toString(),
-            blogName: createPostForBlog.name,
-            createdAt: new Date().toISOString()
-        }
         const resultCreatePostInBlog = await postCollection.insertOne(createPostInBlog)
 
         return {
@@ -150,7 +128,7 @@ export const blogRepository = {
 
     },
 
-    async updateBlogId(id: string, name: string, description: string, websiteUrl: string) {
+    async updateBlogId(id: string, name: string, description: string, websiteUrl: string): Promise<boolean> {
         const updateBlog = await blogCollection.updateOne({_id: new ObjectId(id)},
             {
                 $set: {
@@ -162,16 +140,13 @@ export const blogRepository = {
         return updateBlog.matchedCount === 1
     },
 
-    async deleteBlogId(id: string):
-        Promise<boolean> {
+    async deleteBlogId(id: string): Promise<boolean> {
         const deleteBlog = await blogCollection.deleteOne({_id: new ObjectId(id)})
         return deleteBlog.deletedCount === 1
 
     },
 
-    async deleteBlogAll()
-        :
-        Promise<boolean> {
+    async deleteBlogAll(): Promise<boolean> {
         const deleteAll = await blogCollection.deleteMany({})
         return deleteAll.deletedCount === 1
 

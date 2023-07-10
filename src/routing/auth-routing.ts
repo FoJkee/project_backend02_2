@@ -8,6 +8,7 @@ export const authRouter = Router()
 
 
 authRouter.post('/login', errorsMiddleware, async (req: Request, res: Response) => {
+
     const loginUser = await authRepository.createLogin(req.body.loginOrEmail, req.body.password)
     if(!loginUser){
         res.sendStatus(401)

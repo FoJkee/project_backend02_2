@@ -11,10 +11,7 @@ export const commentRepository = {
             return {
                 id: findComId._id.toString(),
                 content: findComId.content,
-                commentatorInfo: {
-                    userId: findComId.commentatorInfo.userId,
-                    userLogin: findComId.commentatorInfo.userLogin
-                },
+                commentatorInfo: findComId.commentatorInfo,
                 createdAt: findComId.createdAt
             }
         }

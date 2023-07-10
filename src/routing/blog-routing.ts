@@ -6,6 +6,7 @@ import {authMiddleware} from "../middleware /auth-middleware";
 import {QueryParamsBlog} from "../blog-type";
 import {PostTypeId, QueryParamsPost} from "../post-type";
 import {blogPostMiddleware} from "../middleware /blogPost-middleware";
+import {blogService} from "../domen/blog-service";
 
 
 export const blogRouter = Router()
@@ -27,7 +28,7 @@ blogRouter.get('/', async (req: Request<{}, {}, {}, QueryParamsBlog>, res: Respo
 blogRouter.post('/', authMiddleware, blogMiddleware, errorsMiddleware,
     async (req: Request, res: Response) => {
 
-    const blogCreate = await blogRepository.createBlog(
+    const blogCreate = await blogService.createBlog(
         req.body.name, req.body.description, req.body.websiteUrl)
 
     return res.status(201).json(blogCreate)
@@ -63,7 +64,7 @@ blogRouter.post('/:id/posts', authMiddleware, blogPostMiddleware, errorsMiddlewa
             res.sendStatus(404)
             return
         }
-        const createBlogForPost = await blogRepository.createBlogForPost(
+        const createBlogForPost = await blogService.createBlogForPost(
             req.body.title, req.body.shortDescription, req.body.content, req.params.id
         )
 
