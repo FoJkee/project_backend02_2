@@ -45,7 +45,7 @@ blogRouter.get('/:id/posts', async (req: Request<PostTypeId, {}, {}, QueryParams
         Number(req.query.pageNumber) || 1,
         Number(req.query.pageSize) || 10,
         req.query.sortBy || 'createdAt',
-        req.query.sortDirection || "desc" ? "desc" : "asc",
+        req.query.sortDirection === "asc" ? "asc" : "desc",
         req.params.id
     )
 

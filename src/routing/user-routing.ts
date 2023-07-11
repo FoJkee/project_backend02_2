@@ -14,7 +14,7 @@ userRouter.get('/', async (req: Request<{}, {}, {}, QueryParamsUser>, res: Respo
         req.query.searchLoginTerm || '',
         req.query.searchEmailTerm || '',
         req.query.sortBy || 'createdAt',
-        req.query.sortDirection || 'desc',
+        req.query.sortDirection  === 'asc' ? "asc" : "desc",
         Number(req.query.pageNumber) || 1,
         Number(req.query.pageSize) || 10
     )

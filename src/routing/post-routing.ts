@@ -21,7 +21,7 @@ postRouter.get('/:id/comments', async (req: Request<CommentTypeId, {}, {}, Query
         Number(req.query.pageNumber) || 1,
         Number(req.query.pageSize) || 10,
         req.query.sortBy || 'createdAt',
-        req.query.sortDirection || 'desc',
+        req.query.sortDirection === 'asc' ? "asc" : "desc",
         req.params.id
     )
 
@@ -50,7 +50,7 @@ postRouter.get('/', async (req: Request<{}, {}, {}, QueryParamsPost>, res: Respo
         req.query.pageNumber || 1,
         req.query.pageSize || 10,
         req.query.sortBy || 'createdAt',
-        req.query.sortDirection || 'desc'
+        req.query.sortDirection === 'asc' ? "asc" : "desc"
     )
 
     return res.status(200).json(getPost)
