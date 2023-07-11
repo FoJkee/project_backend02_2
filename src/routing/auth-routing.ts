@@ -1,15 +1,14 @@
 import {Response, Router, Request} from "express";
-import {errorsMiddleware} from "../middleware /errors-middleware";
 import {authService} from "../domen/auth-service";
 import {jwtService} from "../application/jwt-service";
 
 
 export const authRouter = Router({})
 
+// Middleware pass and log/email
+authRouter.post('/login', async (req: Request, res: Response) => {
 
-authRouter.post('/login', errorsMiddleware, async (req: Request, res: Response) => {
-
-    const loginUser: any = await authService.checkCredentials(req.body.loginOrEmail, req.body.password)
+    const loginUser = await authService.checkCredentials(req.body.loginOrEmail, req.body.password)
     if (loginUser) {
         const token = await jwtService.createJwt(loginUser)
         res.status(200).json(token)

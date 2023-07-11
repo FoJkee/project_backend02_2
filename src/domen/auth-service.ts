@@ -4,7 +4,7 @@ import {userService} from "./user-service";
 
 export const authService = {
 
-    async checkCredentials(loginOrEmail: string, password: string): Promise<boolean> {
+    async checkCredentials(loginOrEmail: string, password: string) {
         const user = await authRepository.findLoginOrEmail(loginOrEmail)
         if (!user) return false
 
@@ -12,7 +12,7 @@ export const authService = {
         if (user.passwordHash !== passwordHash) {
             return false
         }
-        return true
+        return user
     }
 
 }

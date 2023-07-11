@@ -70,6 +70,7 @@ export const postRepository = {
             createdAt: el.createdAt
         }))
 
+
         const totalCount: number = await postCollection.countDocuments(filter)
         const pagesCount: number = Math.ceil(totalCount / pageSize)
 
