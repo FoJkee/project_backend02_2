@@ -1,5 +1,4 @@
 import {Response, Router, Request} from "express";
-import {userRepository} from "../repository/user-repository";
 import {QueryParamsUser} from "../user-type";
 import {authMiddleware} from "../middleware /auth-middleware";
 import {errorsMiddleware} from "../middleware /errors-middleware";
