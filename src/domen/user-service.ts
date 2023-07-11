@@ -9,7 +9,7 @@ import bcrypt from "bcrypt";
 export const userService = {
 
 
-    async getUser(searchLoginTerm: string, searchEmailTerm: string, sortBy: Sort,
+    async getUser(searchLoginTerm: string, searchEmailTerm: string, sortBy: string,
                   sortDirection: SortDirection, pageNumber: number, pageSize: number): Promise<Paginated<UserTypeId>> {
 
         return userRepository.getUser(searchLoginTerm, searchEmailTerm, sortBy, sortDirection, pageNumber, pageSize)
