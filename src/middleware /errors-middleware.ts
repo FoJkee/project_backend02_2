@@ -10,13 +10,13 @@ export const errorsMiddleware = async (req: Request, res: Response, next: NextFu
         }
 
     }
-
     const resultErr = validationResult(req).formatWith(errMes).array({onlyFirstError: true})
 
-    if(!resultErr){
-      return res.status(400).json({errorsMessages: resultErr})
+    if (!resultErr) {
+        res.status(400).json({errorsMessages: resultErr})
     } else {
-      return next()
+        next()
+
 
     }
 

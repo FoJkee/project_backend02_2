@@ -20,3 +20,8 @@ export type QueryParamsUser = {
     searchLoginTerm: string,
     searchEmailTerm: string
 }
+
+export type UserMe = {
+
+
+}
