@@ -12,13 +12,13 @@ export const userRepository = {
 
         const filter: Filter<UserType_Id> = {}
         if (searchLoginTerm || searchEmailTerm) {
-            let filter = []
+            filter.$or = []
 
             if (searchLoginTerm) {
-                filter.push({login: {$regex: {searchEmailTerm, $options: 'i'}}})
+                filter.$or.push({login: {$regex: searchLoginTerm, $options: 'i'}})
             }
             if (searchEmailTerm) {
-                filter.push({email: {$regex: searchEmailTerm, $options: 'i'}})
+                filter.$or.push({email: {$regex: searchEmailTerm, $options: 'i'}})
             }
         }
 

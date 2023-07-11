@@ -47,8 +47,8 @@ postRouter.post('/:id/comments', authMiddleware,commentMiddleware, errorsMiddlew
 postRouter.get('/', async (req: Request<{}, {}, {}, QueryParamsPost>, res: Response) => {
 
     const getPost = await postService.getPost(
-        req.query.pageNumber || 1,
-        req.query.pageSize || 10,
+        Number(req.query.pageNumber) || 1,
+        Number(req.query.pageSize) || 10,
         req.query.sortBy || 'createdAt',
         req.query.sortDirection === 'asc' ? "asc" : "desc"
     )
