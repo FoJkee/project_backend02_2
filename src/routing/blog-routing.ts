@@ -89,14 +89,15 @@ blogRouter.put('/:id', authMiddleware, blogMiddleware, errorsMiddleware, async (
     if (!findBlogId) {
         res.sendStatus(404)
     } else {
-        res.status(204).json(findBlogId)
+        const blogPut = await blogService.updateBlogId(
+            req.params.id,
+            req.body.name,
+            req.body.description,
+            req.body.websiteUrl
+        )
+        res.status(204)
     }
-    const blogPut = await blogService.updateBlogId(
-        req.params.id,
-        req.body.name,
-        req.body.description,
-        req.body.websiteUrl
-    )
+
 })
 blogRouter.delete('/:id', authMiddleware, async (req: Request, res: Response) => {
 

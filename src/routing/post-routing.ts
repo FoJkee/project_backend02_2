@@ -87,11 +87,11 @@ postRouter.put('/:id', authMiddleware, postMiddleware, errorsMiddleware, async (
 
         } else {
             const updatePost = await postService.updatePost(
+                req.params.id,
                 req.body.title,
                 req.body.shortDescription,
                 req.body.content,
                 req.body.blogId,
-                req.params.id
             )
             res.sendStatus(204)
         }
