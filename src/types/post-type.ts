@@ -15,7 +15,7 @@ export type PostTypeId = {id: string} &  Omit<PostType_Id, "_id">
 export type QueryParamsPost = {
     pageNumber: number,
     pageSize: number,
-    sortBy: Sort,
-    sortDirection: SortDirection,
+    sortBy: string,
+    sortDirection: string,
 
 }

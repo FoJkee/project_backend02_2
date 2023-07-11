@@ -1,13 +1,13 @@
-import {BlogType_Id, BlogTypeId, Paginated} from "../blog-type";
+import {BlogType_Id, BlogTypeId, Paginated} from "../types/blog-type";
 import {Filter, ObjectId, Sort, SortDirection} from "mongodb";
 import {blogRepository} from "../repository/blog-repository";
-import {PostType_Id, PostTypeId} from "../post-type";
+import {PostType_Id, PostTypeId} from "../types/post-type";
 import {blogCollection, postCollection} from "../db";
 
 
 export const blogService = {
 
-    async getBlog(searchNameTerm: string, sortBy: Sort, sortDirection: SortDirection, pageNumber: number,
+    async getBlog(searchNameTerm: string, sortBy: string, sortDirection: SortDirection, pageNumber: number,
                   pageSize: number): Promise<Paginated<BlogTypeId>> {
 
         return blogRepository.getBlog(searchNameTerm, sortBy, sortDirection, pageNumber, pageSize)
@@ -29,7 +29,7 @@ export const blogService = {
 
     },
 
-    async getBlogForPost(pageNumber: number, pageSize: number, sortBy: Sort,
+    async getBlogForPost(pageNumber: number, pageSize: number, sortBy: string,
                          sortDirection: SortDirection, blogId: string): Promise<Paginated<PostTypeId>> {
 
         return blogRepository.getBlogForPost(pageNumber, pageSize, sortBy, sortDirection, blogId)

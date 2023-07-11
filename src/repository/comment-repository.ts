@@ -1,5 +1,5 @@
 import {ObjectId} from "mongodb";
-import {CommentType_Id, CommentTypeId} from "../comment-type";
+import {CommentType_Id, CommentTypeId} from "../types/comment-type";
 import {commentCollection} from "../db";
 
 

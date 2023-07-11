@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt'
 import {Filter, ObjectId, Sort, SortDirection} from "mongodb";
-import {UserType_Id, UserTypeId} from "../user-type";
+import {UserType_Id, UserTypeId} from "../types/user-type";
 import {userCollection} from "../db";
-import {Paginated} from "../blog-type";
+import {Paginated} from "../types/blog-type";
 
 
 export const userRepository = {
 
-    async getUser(searchLoginTerm: string, searchEmailTerm: string, sortBy: Sort,
+    async getUser(searchLoginTerm: string, searchEmailTerm: string, sortBy: string,
                   sortDirection: SortDirection, pageNumber: number, pageSize: number): Promise<Paginated<UserTypeId>> {
 
         const filter: Filter<UserType_Id> = {}
@@ -24,7 +24,7 @@ export const userRepository = {
 
         const settingUser = await userCollection
             .find(filter)
-            .sort({sortBy: sortDirection})
+            .sort({[sortBy]: sortDirection})
             .skip(pageSize * (pageNumber - 1))
             .limit(pageSize)
             .toArray()

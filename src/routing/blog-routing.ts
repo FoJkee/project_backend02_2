@@ -1,10 +1,9 @@
 import {Router, Request, Response} from "express";
 import {blogMiddleware} from "../middleware /blog-middleware";
-import {blogRepository} from "../repository/blog-repository";
 import {errorsMiddleware} from "../middleware /errors-middleware";
 import {authMiddleware} from "../middleware /auth-middleware";
-import {QueryParamsBlog} from "../blog-type";
-import {PostTypeId, QueryParamsPost} from "../post-type";
+import {QueryParamsBlog} from "../types/blog-type";
+import {PostTypeId, QueryParamsPost} from "../types/post-type";
 import {blogPostMiddleware} from "../middleware /blogPost-middleware";
 import {blogService} from "../domen/blog-service";
 

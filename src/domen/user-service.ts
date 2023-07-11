@@ -1,6 +1,6 @@
 import {Filter, ObjectId, Sort, SortDirection} from "mongodb";
-import {Paginated} from "../blog-type";
-import {UserType_Id, UserTypeId} from "../user-type";
+import {Paginated} from "../types/blog-type";
+import {UserType_Id, UserTypeId} from "../types/user-type";
 import {userCollection} from "../db";
 import {userRepository} from "../repository/user-repository";
 import bcrypt from "bcrypt";

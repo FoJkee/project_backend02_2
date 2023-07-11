@@ -1,9 +1,9 @@
-import {CommentType_Id, CommentTypeId} from "../comment-type";
+import {CommentType_Id, CommentTypeId} from "../types/comment-type";
 import {commentCollection, postCollection, userCollection} from "../db";
 import {Filter, ObjectId, Sort, SortDirection} from "mongodb";
 import {postRepository} from "../repository/post-repository";
-import {PostType_Id, PostTypeId} from "../post-type";
-import {Paginated} from "../blog-type";
+import {PostType_Id, PostTypeId} from "../types/post-type";
+import {Paginated} from "../types/blog-type";
 
 
 export const postService = {

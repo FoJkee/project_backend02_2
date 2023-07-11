@@ -15,8 +15,8 @@ export type UserTypeId= {id: string} & Omit<UserType_Id, "_id" | 'passwordHash' 
 export type QueryParamsUser = {
     pageNumber: number,
     pageSize: number,
-    sortBy: Sort,
-    sortDirection: SortDirection,
+    sortBy: string,
+    sortDirection: string,
     searchLoginTerm: string,
     searchEmailTerm: string
 }

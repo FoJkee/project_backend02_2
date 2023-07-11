@@ -1,17 +1,17 @@
 import {Filter, ObjectId, Sort, SortDirection} from "mongodb";
-import {PostType_Id, PostTypeId} from "../post-type";
+import {PostType_Id, PostTypeId} from "../types/post-type";
 import {commentCollection, postCollection} from "../db";
-import {Paginated} from "../blog-type";
-import {CommentType_Id, CommentTypeId} from "../comment-type";
+import {Paginated} from "../types/blog-type";
+import {CommentType_Id, CommentTypeId} from "../types/comment-type";
 
 export const postRepository = {
 
     async getPostForComments(pageNumber: number, pageSize: number,
-                             sortBy: Sort, sortDirection: SortDirection, postId: string): Promise<Paginated<CommentTypeId>> {
+                             sortBy: string, sortDirection: SortDirection, postId: string): Promise<Paginated<CommentTypeId>> {
 
         const settingComForPost: CommentType_Id[] = await commentCollection
             .find({postId})
-            .sort({sortBy: sortDirection})
+            .sort({[sortBy]: sortDirection})
             .skip(pageSize * (pageNumber - 1))
             .limit(pageSize)
             .toArray()
@@ -49,13 +49,13 @@ export const postRepository = {
         }
     },
 
-    async getPost(pageNumber: number, pageSize: number, sortBy: Sort, sortDirection: SortDirection): Promise<Paginated<PostTypeId>> {
+    async getPost(pageNumber: number, pageSize: number, sortBy: string, sortDirection: SortDirection): Promise<Paginated<PostTypeId>> {
 
         const filter: Filter<PostType_Id> = {}
 
         const settingPost = await postCollection
             .find(filter)
-            .sort({sortBy: sortDirection})
+            .sort({[sortBy]: sortDirection})
             .skip(pageSize * (pageNumber - 1))
             .limit(pageSize)
             .toArray()

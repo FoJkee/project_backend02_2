@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import {UserType_Id, UserTypeId} from "../user-type";
+import {UserType_Id, UserTypeId} from "../types/user-type";
 import {ObjectId} from "mongodb";
 import {jwtSecret} from "../db";
 

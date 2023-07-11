@@ -1,9 +1,9 @@
 import {Router, Request, Response} from "express";
-import {QueryParamsPost} from "../post-type";
+import {QueryParamsPost} from "../types/post-type";
 import {authMiddleware} from "../middleware /auth-middleware";
 import {postMiddleware} from "../middleware /post-middleware";
 import {errorsMiddleware} from "../middleware /errors-middleware";
-import {CommentTypeId, QueryParamsCom} from "../comment-type";
+import {CommentTypeId, QueryParamsCom} from "../types/comment-type";
 import {commentMiddleware} from "../middleware /comment-middleware";
 import {postService} from "../domen/post-service";
 

@@ -1,19 +1,19 @@
 import {Filter, ObjectId, Sort, SortDirection} from "mongodb";
 import {blogCollection, postCollection} from "../db";
-import {BlogType_Id, BlogTypeId, Paginated} from "../blog-type";
-import {PostType_Id, PostTypeId} from "../post-type";
+import {BlogType_Id, BlogTypeId, Paginated} from "../types/blog-type";
+import {PostType_Id, PostTypeId} from "../types/post-type";
 
 
 export const blogRepository = {
 
-    async getBlog(searchNameTerm: string, sortBy: Sort, sortDirection: SortDirection, pageNumber: number,
+    async getBlog(searchNameTerm: string, sortBy: string, sortDirection: SortDirection, pageNumber: number,
                   pageSize: number): Promise<Paginated<BlogTypeId>> {
 
         const filter: Filter<BlogType_Id> = {name: {$regex: searchNameTerm, $options: 'i'}}
 
         const settingBlog = await blogCollection
             .find(filter)
-            .sort({sortBy: sortDirection})
+            .sort({[sortBy]: sortDirection})
             .skip(pageSize * (pageNumber - 1))
             .limit(pageSize)
             .toArray()
@@ -56,12 +56,12 @@ export const blogRepository = {
         }
     },
 
-    async getBlogForPost(pageNumber: number, pageSize: number, sortBy: Sort,
+    async getBlogForPost(pageNumber: number, pageSize: number, sortBy: string,
                          sortDirection: SortDirection, blogId: string): Promise<Paginated<PostTypeId>> {
 
         const result = await postCollection
             .find({blogId})
-            .sort({sortBy: sortDirection})
+            .sort({[sortBy]: sortDirection})
             .skip(pageSize * (pageNumber - 1))
             .limit(pageSize)
             .toArray()

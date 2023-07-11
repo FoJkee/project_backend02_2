@@ -1,9 +1,9 @@
 import dotenv from 'dotenv'
 import {MongoClient} from "mongodb";
-import {BlogType_Id} from "./blog-type";
-import {PostType_Id} from "./post-type";
-import {UserType_Id} from "./user-type";
-import {CommentType_Id} from "./comment-type";
+import {BlogType_Id} from "./types/blog-type";
+import {PostType_Id} from "./types/post-type";
+import {UserType_Id} from "./types/user-type";
+import {CommentType_Id} from "./types/comment-type";
 
 dotenv.config()
 

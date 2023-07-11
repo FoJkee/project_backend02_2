@@ -1,5 +1,5 @@
 import {Response, Router, Request} from "express";
-import {QueryParamsUser} from "../user-type";
+import {QueryParamsUser} from "../types/user-type";
 import {authMiddleware} from "../middleware /auth-middleware";
 import {errorsMiddleware} from "../middleware /errors-middleware";
 import {userMiddleware} from "../middleware /user-middleware";
