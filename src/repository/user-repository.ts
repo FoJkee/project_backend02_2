@@ -7,8 +7,37 @@ import {Paginated} from "../blog-type";
 
 export const userRepository = {
 
-    async getUser( itemUser: UserTypeId[], pageNumber: number,
-                   pageSize: number, pagesCount: number, totalCount: number): Promise<Paginated<UserTypeId>> {
+    async getUser(searchLoginTerm: string, searchEmailTerm: string, sortBy: Sort,
+                  sortDirection: SortDirection, pageNumber: number, pageSize: number): Promise<Paginated<UserTypeId>> {
+
+        const filter: Filter<UserType_Id> = {}
+        if (searchLoginTerm || searchEmailTerm) {
+            let filter = []
+
+            if (searchLoginTerm) {
+                filter.push({login: {$regex: {searchEmailTerm, $options: 'i'}}})
+            }
+            if (searchEmailTerm) {
+                filter.push({email: {$regex: searchEmailTerm, $options: 'i'}})
+            }
+        }
+
+        const settingUser = await userCollection
+            .find(filter)
+            .sort({sortBy: sortDirection})
+            .skip(pageSize * (pageNumber - 1))
+            .limit(pageSize)
+            .toArray()
+
+        const itemUser: UserTypeId[] = settingUser.map(el => ({
+            id: el._id.toString(),
+            login: el.login,
+            email: el.email,
+            createdAt: el.createdAt
+        }))
+
+        const totalCount = await userCollection.countDocuments(filter)
+        const pagesCount = Math.ceil(totalCount / pageSize)
 
         const resultUser: Paginated<UserTypeId> = {
             pagesCount: pagesCount,

@@ -3,8 +3,6 @@ import {Filter, ObjectId, Sort, SortDirection} from "mongodb";
 import {blogRepository} from "../repository/blog-repository";
 import {PostType_Id, PostTypeId} from "../post-type";
 import {blogCollection, postCollection} from "../db";
-import {postService} from "./post-service";
-import {postRepository} from "../repository/post-repository";
 
 
 export const blogService = {
@@ -12,28 +10,7 @@ export const blogService = {
     async getBlog(searchNameTerm: string, sortBy: Sort, sortDirection: SortDirection, pageNumber: number,
                   pageSize: number): Promise<Paginated<BlogTypeId>> {
 
-        const filter: Filter<BlogType_Id> = {name: {$regex: searchNameTerm, $options: 'i'}}
-
-        const settingBlog = await blogCollection
-            .find(filter)
-            .sort({sortBy: sortDirection})
-            .skip(pageSize * (pageNumber - 1))
-            .limit(pageSize)
-            .toArray()
-
-        const itemBlog: BlogTypeId[] = settingBlog.map(el => ({
-            id: el._id.toString(),
-            name: el.name,
-            description: el.description,
-            websiteUrl: el.websiteUrl,
-            createdAt: el.createdAt,
-            isMembership: el.isMembership
-        }))
-
-        const totalCount: number = await blogCollection.countDocuments(filter)
-        const pagesCount: number = Math.ceil(totalCount / pageSize)
-
-        return blogRepository.getBlog(itemBlog, totalCount, pagesCount, pageNumber, pageSize)
+        return blogRepository.getBlog(searchNameTerm, sortBy, sortDirection, pageNumber, pageSize)
 
     },
 
@@ -54,28 +31,9 @@ export const blogService = {
 
     async getBlogForPost(pageNumber: number, pageSize: number, sortBy: Sort,
                          sortDirection: SortDirection, blogId: string): Promise<Paginated<PostTypeId>> {
-        const result = await postCollection
-            .find({blogId})
-            .sort({sortBy: sortDirection})
-            .skip(pageSize * (pageNumber - 1))
-            .limit(pageSize)
-            .toArray()
 
-        const itemPostForBlog: PostTypeId[] = result.map(el => ({
-            id: el._id.toString(),
-            title: el.title,
-            shortDescription: el.shortDescription,
-            content: el.content,
-            blogId: el.blogId,
-            blogName: el.blogName,
-            createdAt: el.createdAt
+        return blogRepository.getBlogForPost(pageNumber, pageSize, sortBy, sortDirection, blogId)
 
-        }))
-
-        const totalCount: number = await postCollection.countDocuments({blogId})
-        const pagesCount: number = Math.ceil(totalCount / pageSize)
-
-        return blogRepository.getBlogForPost(itemPostForBlog, totalCount, pagesCount, pageNumber, pageSize)
     },
 
     async createBlogForPost(title: string, shortDescription: string, content: string,

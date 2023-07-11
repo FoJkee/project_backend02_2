@@ -14,11 +14,9 @@ export const commentRepository = {
                 commentatorInfo: findComId.commentatorInfo,
                 createdAt: findComId.createdAt
             }
+        } else {
+            return null
         }
-        else
-            {
-                return null
-            }
 
     },
 
