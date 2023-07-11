@@ -95,7 +95,7 @@ blogRouter.put('/:id', authMiddleware, blogMiddleware, errorsMiddleware, async (
             req.body.description,
             req.body.websiteUrl
         )
-        res.status(204)
+        res.sendStatus(204)
     }
 
 })
