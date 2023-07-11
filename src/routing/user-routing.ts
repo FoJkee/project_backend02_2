@@ -4,13 +4,14 @@ import {QueryParamsUser} from "../user-type";
 import {authMiddleware} from "../middleware /auth-middleware";
 import {errorsMiddleware} from "../middleware /errors-middleware";
 import {userMiddleware} from "../middleware /user-middleware";
+import {userService} from "../domen/user-service";
 
 
-export const userRouter = Router()
+export const userRouter = Router({})
 
 
 userRouter.get('/', async (req: Request<{}, {}, {}, QueryParamsUser>, res: Response) => {
-    const userGet = await userRepository.getUser(
+    const userGet = await userService.getUser(
         req.query.searchLoginTerm || '',
         req.query.searchEmailTerm || '',
         req.query.sortBy || 'createdAt',
@@ -24,7 +25,7 @@ userRouter.get('/', async (req: Request<{}, {}, {}, QueryParamsUser>, res: Respo
 
 userRouter.post('/', authMiddleware, userMiddleware, errorsMiddleware, async (req: Request, res: Response) => {
 
-    const postUser = await userRepository.createUser(
+    const postUser = await userService.createUser(
         req.body.login, req.body.password, req.body.email
     )
     return res.status(201).json(postUser)
@@ -32,12 +33,12 @@ userRouter.post('/', authMiddleware, userMiddleware, errorsMiddleware, async (re
 })
 
 userRouter.delete('/:id', authMiddleware, async (req: Request, res: Response) => {
-    const findUserId = await userRepository.getUserId(req.params.id)
+    const findUserId = await userService.getUserId(req.params.id)
     if(!findUserId){
         res.sendStatus(404)
         return
     }
-    const deleteUserId = await userRepository.deleteUserId(req.params.id)
+    const deleteUserId = await userService.deleteUserId(req.params.id)
     res.sendStatus(204)
 
 

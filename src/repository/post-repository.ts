@@ -1,31 +1,13 @@
 import {Filter, ObjectId, Sort, SortDirection} from "mongodb";
 import {PostType_Id, PostTypeId} from "../post-type";
-import {commentCollection, postCollection, userCollection} from "../db";
+import {commentCollection, postCollection} from "../db";
 import {Paginated} from "../blog-type";
 import {CommentType_Id, CommentTypeId} from "../comment-type";
-import {UserTypeId} from "../user-type";
 
 export const postRepository = {
 
-    async getPostForComments(pageNumber: number, pageSize: number,
-                             sortBy: Sort, sortDirection: SortDirection, postId: string): Promise<Paginated<CommentTypeId>> {
-
-        const settingComForPost: CommentType_Id[] = await commentCollection
-            .find({postId})
-            .sort({sortBy: sortDirection})
-            .skip(pageSize * (pageNumber - 1))
-            .limit(pageSize)
-            .toArray()
-
-        const itemCom: CommentTypeId[] = settingComForPost.map(el => ({
-            id: el._id.toString(),
-            content: el.content,
-            commentatorInfo: el.commentatorInfo,
-            createdAt: el.createdAt
-        }))
-
-        const totalCount: number = await commentCollection.countDocuments({postId})
-        const pagesCount: number = Math.ceil(totalCount / pageSize)
+    async getPostForComments(itemCom: CommentTypeId[], pageSize: number, pageNumber: number,
+                             pagesCount: number, totalCount: number): Promise<Paginated<CommentTypeId>> {
 
         const resultCom: Paginated<CommentTypeId> = {
             pagesCount: pagesCount,
@@ -38,20 +20,7 @@ export const postRepository = {
 
     },
 
-    async createPostForComments(content: string, postId: string): Promise<CommentTypeId | null> {
-
-        const createComForPost = await userCollection.findOne({_id: new ObjectId(postId)})
-        if (!createComForPost) return null
-
-        const createComInPost: CommentType_Id = {
-            _id: new ObjectId(),
-            content,
-            commentatorInfo: {
-                userId: createComForPost._id.toString(),
-                userLogin: createComForPost.login,
-            },
-            createdAt: new Date().toISOString()
-        }
+    async createPostForComments(createComInPost: CommentType_Id): Promise<CommentTypeId> {
 
         const resultCreateComInPost = await commentCollection.insertOne(createComInPost)
 
@@ -63,29 +32,8 @@ export const postRepository = {
         }
     },
 
-    async getPost(pageNumber: number, pageSize: number, sortBy: Sort, sortDirection: SortDirection): Promise<Paginated<PostTypeId>> {
-
-        const filter: Filter<PostType_Id> = {}
-
-        const settingPost = await postCollection
-            .find(filter)
-            .sort({sortBy: sortDirection})
-            .skip(pageSize * (pageNumber - 1))
-            .limit(pageSize)
-            .toArray()
-
-        const itemPost: PostTypeId[] = settingPost.map(el => ({
-            id: el._id.toString(),
-            title: el.title,
-            shortDescription: el.shortDescription,
-            content: el.content,
-            blogId: el.blogId,
-            blogName: el.blogName,
-            createdAt: el.createdAt
-        }))
-
-        const totalCount: number = await postCollection.countDocuments(filter)
-        const pagesCount: number = Math.ceil(totalCount / pageSize)
+    async getPost(itemPost: PostTypeId[], pageSize: number,
+                  pageNumber: number, totalCount: number, pagesCount: number): Promise<Paginated<PostTypeId>> {
 
         const resultPost: Paginated<PostTypeId> = {
             pagesCount: pagesCount,
@@ -98,17 +46,8 @@ export const postRepository = {
 
     },
 
-    async createPost(title: string, shortDescription: string, content: string, blogId: string, blogName: string): Promise<PostTypeId> {
+    async createPost(newPost: PostType_Id): Promise<PostTypeId> {
 
-        const newPost: PostType_Id = {
-            _id: new ObjectId(),
-            title,
-            shortDescription,
-            content,
-            blogId,
-            blogName,
-            createdAt: new Date().toISOString()
-        }
         const resultNewPost = await postCollection.insertOne(newPost)
 
         return {

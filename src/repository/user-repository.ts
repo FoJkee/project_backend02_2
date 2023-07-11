@@ -7,37 +7,8 @@ import {Paginated} from "../blog-type";
 
 export const userRepository = {
 
-    async getUser(searchLoginTerm: string, searchEmailTerm: string, sortBy: Sort,
-                  sortDirection: SortDirection, pageNumber: number, pageSize: number): Promise<Paginated<UserTypeId>> {
-
-        const filter: Filter<UserType_Id> = {}
-        if (searchLoginTerm || searchEmailTerm) {
-            let filter = []
-
-            if (searchLoginTerm) {
-                filter.push({login: {$regex: {searchEmailTerm, $options: 'i'}}})
-            }
-            if(searchEmailTerm){
-                filter.push({email:{$regex: searchEmailTerm, $options: 'i'}})
-            }
-        }
-
-        const settingUser = await userCollection
-            .find(filter)
-            .sort({sortBy: sortDirection})
-            .skip(pageSize * (pageNumber - 1))
-            .limit(pageSize)
-            .toArray()
-
-        const itemUser: UserTypeId[] = settingUser.map(el => ({
-            id: el._id.toString(),
-            login: el.login,
-            email: el.email,
-            createdAt: el.createdAt
-        }))
-
-        const totalCount = await userCollection.countDocuments(filter)
-        const pagesCount = Math.ceil(totalCount / pageSize)
+    async getUser( itemUser: UserTypeId[], pageNumber: number,
+                   pageSize: number, pagesCount: number, totalCount: number): Promise<Paginated<UserTypeId>> {
 
         const resultUser: Paginated<UserTypeId> = {
             pagesCount: pagesCount,
@@ -50,20 +21,7 @@ export const userRepository = {
 
     },
 
-
-    async createUser(login: string, password: string, email: string): Promise<UserTypeId> {
-
-        const passwordSalt = await bcrypt.genSalt(10)
-        const passwordHash = await this._generateHash(password, passwordSalt)
-
-        const userNew: UserType_Id = {
-            _id: new ObjectId(),
-            login,
-            email,
-            passwordHash,
-            passwordSalt,
-            createdAt: new Date().toISOString()
-        }
+    async createUser(userNew: UserType_Id): Promise<UserTypeId> {
 
         const resultUserNew = await userCollection.insertOne(userNew)
 
@@ -90,12 +48,6 @@ export const userRepository = {
         } else {
             return null
         }
-    },
-
-
-    async _generateHash(password: string, salt: string) {
-        const hash = await bcrypt.hash(password, salt)
-        return hash
     },
 
     async deleteUserId(id: string): Promise<boolean> {
