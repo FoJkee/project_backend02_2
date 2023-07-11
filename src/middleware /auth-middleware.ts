@@ -6,9 +6,10 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     const code = Buffer.from("admin:qwerty", "utf-8").toString('base64')
 
     if(req.headers.authorization === `Basic ${code}`){
-      return  next()
+      next()
     } else {
-      return  res.sendStatus(401)
+      res.sendStatus(401)
+
     }
 
 }

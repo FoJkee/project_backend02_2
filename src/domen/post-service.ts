@@ -9,7 +9,7 @@ import {Paginated} from "../types/blog-type";
 export const postService = {
 
     async getPostForComments(pageNumber: number, pageSize: number,
-                             sortBy: Sort, sortDirection: SortDirection, postId: string): Promise<Paginated<CommentTypeId>> {
+                             sortBy: string, sortDirection: SortDirection, postId: string): Promise<Paginated<CommentTypeId>> {
 
         return postRepository.getPostForComments(pageNumber, pageSize, sortBy, sortDirection, postId)
 
@@ -34,7 +34,7 @@ export const postService = {
 
     },
 
-    async getPost(pageNumber: number, pageSize: number, sortBy: Sort, sortDirection: SortDirection): Promise<Paginated<PostTypeId>> {
+    async getPost(pageNumber: number, pageSize: number, sortBy: string, sortDirection: SortDirection): Promise<Paginated<PostTypeId>> {
 
         return postRepository.getPost(pageNumber, pageSize, sortBy, sortDirection)
 

@@ -16,7 +16,7 @@ export type CommentTypeId = {id: string} & Omit<CommentType_Id, "_id">
 export type QueryParamsCom = {
     pageNumber: number,
     pageSize: number,
-    sortBy: Sort,
+    sortBy: string,
     sortDirection: SortDirection,
 }
 

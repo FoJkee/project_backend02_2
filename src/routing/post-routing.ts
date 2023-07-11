@@ -79,21 +79,22 @@ postRouter.get('/:id', async (req: Request, res: Response) => {
     }
 })
 
-postRouter.put('/:id', authMiddleware, errorsMiddleware, async (req: Request, res: Response) => {
+postRouter.put('/:id', authMiddleware, postMiddleware, errorsMiddleware, async (req: Request, res: Response) => {
     const findPostId = await postService.getPostForId(req.params.id)
     if (!findPostId) {
         res.sendStatus(404)
 
     } else {
-        res.status(204).json(findPostId)
+        const updatePost = await postService.updatePost(
+            req.body.title,
+            req.body.shortDescription,
+            req.body.content,
+            req.body.blogId,
+            req.params.id
+        )
+        res.sendStatus(204)
     }
-    const updatePost = await postService.updatePost(
-        req.body.title,
-        req.body.shortDescription,
-        req.body.content,
-        req.body.blogId,
-        req.params.id
-    )
+
 
 })
 
