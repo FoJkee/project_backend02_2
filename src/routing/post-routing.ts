@@ -6,6 +6,7 @@ import {errorsMiddleware} from "../middleware /errors-middleware";
 import {CommentTypeId, QueryParamsCom} from "../types/comment-type";
 import {commentMiddleware} from "../middleware /comment-middleware";
 import {postService} from "../domen/post-service";
+import {authBearerMiddleware} from "../middleware /authbearer-middleware";
 
 
 export const postRouter = Router({})
@@ -28,7 +29,7 @@ postRouter.get('/:id/comments', async (req: Request<CommentTypeId, {}, {}, Query
     return res.status(200).json(postIdCom)
 
 })
-postRouter.post('/:id/comments', authMiddleware,commentMiddleware, errorsMiddleware,
+postRouter.post('/:id/comments', authBearerMiddleware, commentMiddleware, errorsMiddleware,
     async (req: Request, res: Response) => {
 
     const findPostId = await postService.getPostForId(req.params.id)
@@ -98,8 +99,6 @@ postRouter.put('/:id', authMiddleware, postMiddleware, errorsMiddleware, async (
     } catch (e){
         res.status(460).json(e)
     }
-
-
 
 })
 

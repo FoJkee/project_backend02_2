@@ -1,4 +1,5 @@
 import {userCollection} from "../db";
+import {UserMe, UserTypeId} from "../types/user-type";
 
 
 
@@ -11,6 +12,7 @@ export const authRepository = {
             $or: [{login: loginOrEmail}, {email: loginOrEmail}]
         })
         return user
-    }
+    },
 
 }
+

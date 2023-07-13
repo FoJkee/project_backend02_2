@@ -1,7 +1,7 @@
 import {Response, Request, Router} from "express";
 import {commentRepository} from "../repository/comment-repository";
-import {authMiddleware} from "../middleware /auth-middleware";
 import {errorsMiddleware} from "../middleware /errors-middleware";
+import {authBearerMiddleware} from "../middleware /authbearer-middleware";
 
 
 export const commentRouter = Router()
@@ -16,7 +16,7 @@ commentRouter.get('/:id', async (req: Request, res: Response) => {
     }
 })
 
-commentRouter.delete('/:commentId', authMiddleware, async (req: Request, res: Response) => {
+commentRouter.delete('/:commentId', authBearerMiddleware, async (req: Request, res: Response) => {
     const findComId = await commentRepository.getComId(req.params.id)
     if (!findComId) {
         res.sendStatus(404)
@@ -32,7 +32,7 @@ commentRouter.delete('/:commentId', authMiddleware, async (req: Request, res: Re
 
 })
 
-commentRouter.put('/:commentId', authMiddleware, errorsMiddleware, async (req: Request, res: Response) => {
+commentRouter.put('/:commentId', authBearerMiddleware, errorsMiddleware, async (req: Request, res: Response) => {
     const findComId = await commentRepository.getComId(req.params.id)
     if (!findComId) {
         res.sendStatus(404)

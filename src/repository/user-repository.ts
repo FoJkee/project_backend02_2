@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import {Filter, ObjectId, Sort, SortDirection} from "mongodb";
-import {UserType_Id, UserTypeId} from "../types/user-type";
+import {UserMe, UserType_Id, UserTypeId} from "../types/user-type";
 import {userCollection} from "../db";
 import {Paginated} from "../types/blog-type";
 
@@ -90,7 +90,22 @@ export const userRepository = {
         return deleteUserAll.deletedCount === 1
 
 
-    }
+    },
+
+    async getMe(id: string): Promise<UserMe | null> {
+
+        const getUser = await userCollection.findOne({_id: new ObjectId(id)})
+
+        if (getUser) {
+            return {
+                login: getUser.login,
+                email: getUser.email,
+                userId: getUser._id.toString()
+            }
+        } else {
+            return null
+        }
+    },
 
 
 }

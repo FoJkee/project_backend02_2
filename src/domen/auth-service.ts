@@ -9,6 +9,7 @@ export const authService = {
         if (!user) return false
 
         const passwordHash = await userService._generateHash(password, user.passwordSalt)
+
         if (user.passwordHash !== passwordHash) {
             return false
         }
