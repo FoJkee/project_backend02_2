@@ -92,20 +92,16 @@ export const userRepository = {
 
     },
 
-    async getMe(id: string): Promise<UserMe | null> {
+    async getMe(): Promise<UserMe[] | null> {
 
-        const getUser = await userCollection.findOne({_id: new ObjectId(id)})
+        const getUser = await userCollection.find({}).toArray()
 
-        if (getUser) {
-            return {
-                login: getUser.login,
-                email: getUser.email,
-                userId: getUser._id.toString()
-            }
-        } else {
-            return null
-        }
-    },
+        return getUser.map(el => ({
 
+            email: el.email,
+            login: el.login,
+            userId: el._id.toString()
+        }))
 
+    }
 }

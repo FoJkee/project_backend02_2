@@ -39,8 +39,7 @@ postRouter.post('/:id/comments', authBearerMiddleware, commentMiddleware, errors
     }
 
     const createPostForCom = await postService.createPostForComments(
-        req.body.content, req.params.id
-    )
+        req.body.content, req.userId!.id)
        return  res.status(201).json(createPostForCom)
 
 })

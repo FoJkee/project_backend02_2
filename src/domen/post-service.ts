@@ -15,9 +15,9 @@ export const postService = {
 
     },
 
-    async createPostForComments(content: string, postId: string): Promise<CommentTypeId | null> {
+    async createPostForComments(content: string, userId: string): Promise<CommentTypeId | null> {
 
-        const createComForPost = await userCollection.findOne({_id: new ObjectId(postId)})
+        const createComForPost = await userCollection.findOne({_id: new ObjectId(userId)})
         if (!createComForPost) return null
 
         const createComInPost: CommentType_Id = {

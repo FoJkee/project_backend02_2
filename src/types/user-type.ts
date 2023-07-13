@@ -21,4 +21,4 @@ export type QueryParamsUser = {
     searchEmailTerm: string
 }
 
-export type UserMe = {userId : string} & Omit<UserType_Id, 'createdAt' | 'passwordHash' | 'passwordSalt' | "_id">
+export type UserMe = {userId : string} & Omit<UserTypeId, 'createdAt' | 'id'>

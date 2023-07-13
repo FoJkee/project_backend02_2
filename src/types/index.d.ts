@@ -1,4 +1,4 @@
-import {UserType_Id, UserTypeId} from "./user-type";
+import {UserTypeId} from "./user-type";
 
 
 declare global {

@@ -1,4 +1,4 @@
-import {ObjectId, Sort, SortDirection} from "mongodb";
+import {ObjectId, SortDirection} from "mongodb";
 
 export type CommentType_Id = {
     _id: ObjectId,

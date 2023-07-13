@@ -8,7 +8,7 @@ export const commentRouter = Router()
 
 
 commentRouter.get('/:id', async (req: Request, res: Response) => {
-    const getComId = await commentRepository.getComId(req.params.id)
+    const getComId = await commentRepository.getComId(req.userId!.id)
     if (getComId) {
         res.status(200).json(getComId)
     } else {
@@ -17,13 +17,13 @@ commentRouter.get('/:id', async (req: Request, res: Response) => {
 })
 
 commentRouter.delete('/:commentId', authBearerMiddleware, async (req: Request, res: Response) => {
-    const findComId = await commentRepository.getComId(req.params.id)
+    const findComId = await commentRepository.getComId(req.userId!.id)
     if (!findComId) {
         res.sendStatus(404)
         return
     }
 
-    const deleteComId = await commentRepository.deleteCom(req.params.id)
+    const deleteComId = await commentRepository.deleteCom(req.userId!.id)
     if (!deleteComId) {
         res.sendStatus(403)
         return

@@ -12,6 +12,7 @@ const mongoUrl = process.env.Mongo_Url || "mongodb://127.0.0.1:27017"
 
 export const jwtSecret = process.env.JWT_SECRET || '123'
 
+
 console.log(mongoUrl)
 
 if (!mongoUrl) throw new Error('Not')
