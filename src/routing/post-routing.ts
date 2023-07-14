@@ -11,8 +11,9 @@ import {authBearerMiddleware} from "../middleware /authbearer-middleware";
 
 export const postRouter = Router({})
 
-postRouter.get('/:id/comments', async (req: Request<CommentTypeId, {}, {}, QueryParamsCom>, res: Response) => {
+postRouter.get('/:id/comments',async (req: Request<CommentTypeId, {}, {}, QueryParamsCom>, res: Response) => {
     const findPostId = await postService.getPostForId(req.params.id)
+
     if (!findPostId) {
         res.sendStatus(404)
         return
@@ -39,7 +40,7 @@ postRouter.post('/:id/comments', authBearerMiddleware, commentMiddleware, errors
         }
 
         const createPostForCom = await postService.createPostForComments(
-            req.body.content, req.userId!.id, req.params.id)
+            req.body.content, req.user!.id, req.params.id)
         return res.status(201).json(createPostForCom)
 
     })

@@ -41,11 +41,11 @@ commentRouter.put('/:commentId', authBearerMiddleware, commentMiddleware, errors
 
         } else {
             const comPut = await commentRepository.updateCom(req.body.content, req.params.id)
-            res.status(204).json(findComId)
+            res.sendStatus(204)
             return
         }
     } catch (e) {
-        res.sendStatus(403).json(e)
+        res.status(403).json(e)
     }
 
 })

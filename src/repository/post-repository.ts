@@ -1,6 +1,6 @@
-import {Filter, ObjectId, Sort, SortDirection} from "mongodb";
+import {Filter, ObjectId, SortDirection} from "mongodb";
 import {PostType_Id, PostTypeId} from "../types/post-type";
-import {commentCollection, postCollection} from "../db";
+import {commentCollection, postCollection, userCollection} from "../db";
 import {Paginated} from "../types/blog-type";
 import {CommentType_Id, CommentTypeId} from "../types/comment-type";
 
@@ -10,6 +10,7 @@ export const postRepository = {
                              sortBy: string, sortDirection: SortDirection, postId: string): Promise<Paginated<CommentTypeId>> {
 
         const filter = {postId: new ObjectId(postId)}
+
         const settingComForPost: CommentType_Id[] = await commentCollection
             .find(filter)
             .sort({[sortBy]: sortDirection})

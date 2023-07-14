@@ -4,6 +4,8 @@ import {userService} from "../domen/user-service";
 
 
 export const authBearerMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+
+
     if (!req.headers.authorization) {
         res.sendStatus(401)
         return
@@ -11,14 +13,10 @@ export const authBearerMiddleware = async (req: Request, res: Response, next: Ne
 
     const token = req.headers.authorization.split(' ')[1]
 
-    if(!token) {
-        return res.sendStatus(401)
-    }
-
     const userId = await jwtService.getUserByToken(token)
 
     if (userId) {
-        req.userId = await userService.getUserId(String(userId))
+        req.user = await userService.getUserId(String(userId))
         return next()
     }
     res.sendStatus(401)
