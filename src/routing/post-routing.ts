@@ -23,7 +23,7 @@ postRouter.get('/:id/comments', async (req: Request<CommentTypeId, {}, {}, Query
         Number(req.query.pageSize) || 10,
         req.query.sortBy || 'createdAt',
         req.query.sortDirection === 'asc' ? "asc" : "desc",
-        findPostId.id
+        req.params.id
     )
 
     return res.status(200).json(postIdCom)
@@ -39,7 +39,7 @@ postRouter.post('/:id/comments', authBearerMiddleware, commentMiddleware, errors
         }
 
         const createPostForCom = await postService.createPostForComments(
-            req.body.content, req.userId!.id, findPostId.id)
+            req.body.content, req.userId!.id, req.params.id)
         return res.status(201).json(createPostForCom)
 
     })

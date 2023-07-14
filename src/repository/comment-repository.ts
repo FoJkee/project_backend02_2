@@ -1,21 +1,20 @@
 import {ObjectId} from "mongodb";
 import {CommentTypeId} from "../types/comment-type";
-import {userCollection} from "../db";
+import {commentCollection} from "../db";
 
 
 export const commentRepository = {
 
-    async getComId(content: string, userId: string): Promise<CommentTypeId | null> {
-        const findComId = await userCollection.findOne({_id: new ObjectId(userId)})
+    async getComId(id: string): Promise<CommentTypeId | null> {
+
+        const findComId = await commentCollection.findOne({_id: new ObjectId(id)})
+
 
         if (findComId) {
             return {
                 id: findComId._id.toString(),
-                content,
-                commentatorInfo: {
-                    userId: findComId!._id.toString(),
-                    userLogin: findComId!.login
-                },
+                content: findComId.content,
+                commentatorInfo: findComId.commentatorInfo,
                 createdAt: findComId.createdAt
             }
         } else {
@@ -24,15 +23,15 @@ export const commentRepository = {
 
     },
 
-    async deleteCom(userId: string): Promise<boolean> {
-        const deleteComment = await userCollection.deleteOne({_id: new ObjectId(userId)})
+    async deleteCom(id: string): Promise<boolean> {
+        const deleteComment = await commentCollection.deleteOne({_id: new ObjectId(id)})
         return deleteComment.deletedCount === 1
 
 
     },
 
-    async updateCom(content: string, userId: string) {
-        const updateComment = await userCollection.updateOne({_id: new ObjectId(userId)},
+    async updateCom(content: string, id: string) {
+        const updateComment = await commentCollection.updateOne({_id: new ObjectId(id)},
             {
                 $set: {
                     content

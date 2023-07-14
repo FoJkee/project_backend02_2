@@ -10,6 +10,7 @@ export const authBearerMiddleware = async (req: Request, res: Response, next: Ne
     }
 
     const token = req.headers.authorization.split(' ')[1]
+
     if(!token) {
         return res.sendStatus(401)
     }
