@@ -2,6 +2,7 @@ import {ObjectId, SortDirection} from "mongodb";
 
 export type CommentType_Id = {
     _id: ObjectId,
+    postId: ObjectId
     content: string,
     commentatorInfo: {
         userId: string,
@@ -10,7 +11,17 @@ export type CommentType_Id = {
     createdAt: string
 }
 
-export type CommentTypeId = {id: string} & Omit<CommentType_Id, "_id">
+export type CommentTypeId = {id: string} & Omit<CommentType_Id, "_id" | 'postId'>
+
+export type CommentViewType = {
+    id: string,
+    content: string,
+    commentatorInfo: {
+        userId: string,
+        userLogin: string
+    },
+    createdAt: string
+}
 
 
 export type QueryParamsCom = {

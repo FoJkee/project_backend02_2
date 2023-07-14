@@ -9,8 +9,9 @@ export const postRepository = {
     async getPostForComments(pageNumber: number, pageSize: number,
                              sortBy: string, sortDirection: SortDirection, postId: string): Promise<Paginated<CommentTypeId>> {
 
+        const filter = {postId: new ObjectId(postId)}
         const settingComForPost: CommentType_Id[] = await commentCollection
-            .find({postId})
+            .find(filter)
             .sort({[sortBy]: sortDirection})
             .skip(pageSize * (pageNumber - 1))
             .limit(pageSize)
@@ -23,7 +24,7 @@ export const postRepository = {
             createdAt: el.createdAt
         }))
 
-        const totalCount: number = await commentCollection.countDocuments({postId})
+        const totalCount: number = await commentCollection.countDocuments(filter)
         const pagesCount: number = Math.ceil(totalCount / pageSize)
 
         const resultCom: Paginated<CommentTypeId> = {

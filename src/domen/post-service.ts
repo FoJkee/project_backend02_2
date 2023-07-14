@@ -15,17 +15,17 @@ export const postService = {
 
     },
 
-    async createPostForComments(content: string, postId: string): Promise<CommentTypeId | null> {
+    async createPostForComments(content: string, userId: string, postId: string): Promise<CommentTypeId | null> {
 
-        const createComForPost = await userCollection.findOne({_id: new ObjectId(postId)})
-        if (!createComForPost) return null
+        const user = await userCollection.findOne({_id: new ObjectId(userId)},)
 
         const createComInPost: CommentType_Id = {
             _id: new ObjectId(),
+            postId: new ObjectId(postId),
             content,
             commentatorInfo: {
-                userId: createComForPost._id.toString(),
-                userLogin: createComForPost.login,
+                userId: user!._id.toString(),
+                userLogin: user!.login,
             },
             createdAt: new Date().toISOString()
         }
