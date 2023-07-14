@@ -17,13 +17,15 @@ commentRouter.get('/:id', async (req: Request, res: Response) => {
     }
 })
 
+
+
 commentRouter.delete('/:commentId', authBearerMiddleware, async (req: Request, res: Response) => {
-    const findComId = await commentRepository.getComId(req.params.id)
+    const findComId = await commentRepository.getComId(req.params.commentId)
     if (!findComId) {
         res.sendStatus(404)
         return
     }
-    const deleteComId = await commentRepository.deleteCom(req.params.id)
+    const deleteComId = await commentRepository.deleteCom(req.params.commentId)
     if (!deleteComId) {
         res.sendStatus(403)
         return
@@ -34,13 +36,13 @@ commentRouter.delete('/:commentId', authBearerMiddleware, async (req: Request, r
 
 commentRouter.put('/:commentId', authBearerMiddleware, commentMiddleware, errorsMiddleware, async (req: Request, res: Response) => {
     try {
-        const findComId = await commentRepository.getComId(req.params.id)
+        const findComId = await commentRepository.getComId(req.params.commentId)
 
         if (!findComId) {
             res.sendStatus(404)
 
         } else {
-            const comPut = await commentRepository.updateCom(req.body.content, req.params.id)
+            const comPut = await commentRepository.updateCom(req.body.content, req.params.commentId)
             res.sendStatus(204)
             return
         }
