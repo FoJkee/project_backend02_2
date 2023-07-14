@@ -25,14 +25,14 @@ commentRouter.delete('/:commentId', authBearerMiddleware, async (req: Request, r
             res.sendStatus(404)
         } else {
             const deleteComId = await commentRepository.deleteCom(req.params.commentId)
-            res.sendStatus(403)
+
+            res.sendStatus(204)
             return
         }
     } catch {
-        res.sendStatus(204)
+        res.sendStatus(403)
 
     }
-
 
 })
 
@@ -45,11 +45,10 @@ commentRouter.put('/:commentId', authBearerMiddleware, commentMiddleware, errors
 
         } else {
             const comPut = await commentRepository.updateCom(req.body.content, req.params.commentId)
-            res.sendStatus(403)
+            res.sendStatus(204)
             return
         }
     } catch {
-        res.sendStatus(204)
+        res.sendStatus(403)
     }
-
 })
