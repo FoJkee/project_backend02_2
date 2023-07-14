@@ -5,7 +5,7 @@ import {authBearerMiddleware} from "../middleware /authbearer-middleware";
 import {commentMiddleware} from "../middleware /comment-middleware";
 
 
-export const commentRouter = Router()
+export const commentRouter = Router({})
 
 
 commentRouter.get('/:id', async (req: Request, res: Response) => {
@@ -33,7 +33,6 @@ commentRouter.delete('/:commentId', authBearerMiddleware, async (req: Request, r
         res.sendStatus(204)
         return
     }
-
 
 })
 
