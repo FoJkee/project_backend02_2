@@ -94,10 +94,9 @@ export const userRepository = {
 
     async getMe(): Promise<UserMe[] | null> {
 
-        const getUser = await userCollection.find({}).toArray()
+        const getUser = await userCollection.find().toArray()
 
         return getUser.map(el => ({
-
             email: el.email,
             login: el.login,
             userId: el._id.toString()

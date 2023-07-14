@@ -23,7 +23,7 @@ postRouter.get('/:id/comments', async (req: Request<CommentTypeId, {}, {}, Query
         Number(req.query.pageSize) || 10,
         req.query.sortBy || 'createdAt',
         req.query.sortDirection === 'asc' ? "asc" : "desc",
-        req.params.id
+        req.userId!.id
     )
 
     return res.status(200).json(postIdCom)
@@ -32,17 +32,17 @@ postRouter.get('/:id/comments', async (req: Request<CommentTypeId, {}, {}, Query
 postRouter.post('/:id/comments', authBearerMiddleware, commentMiddleware, errorsMiddleware,
     async (req: Request, res: Response) => {
 
-    const findPostId = await postService.getPostForId(req.params.id)
-    if (!findPostId) {
-        res.sendStatus(404)
-        return
-    }
+        const findPostId = await postService.getPostForId(req.params.id)
+        if (!findPostId) {
+            res.sendStatus(404)
+            return
+        }
 
-    const createPostForCom = await postService.createPostForComments(
-        req.body.content, req.userId!.id)
-       return  res.status(201).json(createPostForCom)
+        const createPostForCom = await postService.createPostForComments(
+            req.body.content, req.userId!.id)
+        return res.status(201).json(createPostForCom)
 
-})
+    })
 
 postRouter.get('/', async (req: Request<{}, {}, {}, QueryParamsPost>, res: Response) => {
 
@@ -95,8 +95,8 @@ postRouter.put('/:id', authMiddleware, postMiddleware, errorsMiddleware, async (
             )
             res.sendStatus(204)
         }
-    } catch (e){
-        res.status(460).json(e)
+    } catch (e) {
+        res.status(401).json(e)
     }
 
 })
