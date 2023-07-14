@@ -13,6 +13,8 @@ export type CommentType_Id = {
 
 export type CommentTypeId = {id: string} & Omit<CommentType_Id, "_id" | 'postId'>
 
+//WithIdComType
+
 
 
 export type QueryParamsCom = {
