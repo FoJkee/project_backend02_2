@@ -9,7 +9,7 @@ export const commentRouter = Router()
 
 
 commentRouter.get('/:id', async (req: Request, res: Response) => {
-    const getComId = await commentRepository.getComId(req.params.id)
+    const getComId = await commentRepository.getComId(req.userId!.id, req.body.content)
     if (getComId) {
         res.status(200).json(getComId)
     } else {
@@ -18,7 +18,7 @@ commentRouter.get('/:id', async (req: Request, res: Response) => {
 })
 
 commentRouter.delete('/:commentId', authBearerMiddleware, async (req: Request, res: Response) => {
-    const findComId = await commentRepository.getComId(req.userId!.id)
+    const findComId = await commentRepository.getComId(req.userId!.id, req.body.content)
     if (!findComId) {
         res.sendStatus(404)
         return
@@ -34,10 +34,11 @@ commentRouter.delete('/:commentId', authBearerMiddleware, async (req: Request, r
 
 commentRouter.put('/:commentId', authBearerMiddleware, commentMiddleware, errorsMiddleware, async (req: Request, res: Response) => {
     try {
-        const findComId = await commentRepository.getComId(req.params.id)
+        const findComId = await commentRepository.getComId(req.userId!.id, req.body.content)
 
         if (!findComId) {
             res.sendStatus(404)
+
         } else {
             const comPut = await commentRepository.updateCom(req.body.content, req.userId!.id)
             res.status(204).json(findComId)
